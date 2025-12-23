@@ -46,14 +46,15 @@ func selectData(db *sql.DB, n int) error {
 			fmt.Println("Row: ", err)
 			return err
 		}
-	}
+	
 
-	date, err := time.Parse(time.RFC1123, dt)
-	if err != nil {
-		fmt.Println("Date:", err)
-		return err
+		date, err := time.Parse(time.RFC1123, dt)
+		if err != nil {
+			fmt.Println("Date:", err)
+			return err
+		}
+		fmt.Printf("%d %s %s\n", id, date, description)
 	}
-	fmt.Printf("%d %s %s\n", id, date, description)
 	return nil
 }
 
@@ -69,7 +70,7 @@ func main() {
 	defer db.Close()
 
 	const create string = `
-	CREATE TABLE IF NOT EXIST book (
+	CREATE TABLE IF NOT EXISTS book (
 		id INTEGER NOT NULL PRIMARY KEY,
 		time TEXT NOT NULL,
 		description TEXT);`

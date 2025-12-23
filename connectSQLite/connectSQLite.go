@@ -124,7 +124,6 @@ func main() {
 	count := -100
 	for query.Next() {
 		_ = query.Scan(&count)
-
 	}
 	fmt.Println("count(*):", count)
 }

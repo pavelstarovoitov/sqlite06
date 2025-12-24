@@ -141,6 +141,7 @@ func ListUsers() ([]Userdata, error) {
 	rows, err := db.Query(`SELECT ID, Username, Name, Surname, Description FROM Users, Userdata WHERE Users.ID = Userdata.UserID`)
 	defer func() {
 		if rows != nil {
+			fmt.Println("before row close")
 			if cerr := rows.Close(); cerr != nil {
 				fmt.Printf("rows close error: %v", cerr)
 			}

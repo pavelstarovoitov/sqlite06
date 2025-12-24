@@ -96,7 +96,7 @@ func exists(username string) int {
 		err = rows.Scan(&id)
 		if err != nil {
 			fmt.Println("exists() Scan", err)
-			return -1
+			return user, -1
 		}
 		userID = id
 	}
@@ -111,7 +111,7 @@ func SearchByName(username string) (Userdata, int) {
         db, err := openConnection()
         if err != nil {
                 fmt.Println(err)
-                return -1
+                return user, -1
         }
         defer db.Close()
 

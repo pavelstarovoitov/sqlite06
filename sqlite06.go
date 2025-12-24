@@ -105,17 +105,17 @@ func exists(username string) int {
 
 func SearchByName(username string) (Userdata, int) {
         username = strings.ToLower(username)
-	user := Userdata{
-	}
+	user := Userdata{ID: -1, Username: username, Name: "", Surname: "", Description: ""}
+                
 
         db, err := openConnection()
         if err != nil {
                 fmt.Println(err)
-                return user, -1
+                return user, user.ID
         }
         defer db.Close()
 
-        userID := -1
+        //userID := -1
         statement := fmt.Sprintf(`SELECT ID, Username, Name, Surname, Description FROM Users where Username = '%s'`, username)
         rows, err := db.Query(statement)
         //defer rows.Close()

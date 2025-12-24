@@ -139,7 +139,14 @@ func ListUsers() ([]Userdata, error) {
 
 	//rows, err := db.Query(`SELECT ID, Username, Name, Surname, Description FROM Users, Userdata WHERE Users.ID = Userdata.UserID`)
 	rows, err := db.Query(`SELECT ID, Username, Name, Surname, Description FROM Users, Userdata WHERE Users.ID = Userdata.UserID`)
-	defer rows.Close()
+	defer func() {
+		if rows != nil {
+			if cerr := rows.Close(); cerr != nil {
+				fmt.Printf("rows close error: %v", cerr)
+			}
+		}
+	}()
+	//defer rows.Close()
 	if err != nil {
 		fmt.Println("err:", err)
 		return Data, err

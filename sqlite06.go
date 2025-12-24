@@ -103,6 +103,48 @@ func exists(username string) int {
 	return userID
 }
 
+func SearchByName(username string) (Userdata, int) {
+        username = strings.ToLower(username)
+	user := Userdata{
+	}
+
+        db, err := openConnection()
+        if err != nil {
+                fmt.Println(err)
+                return -1
+        }
+        defer db.Close()
+
+        userID := -1
+        statement := fmt.Sprintf(`SELECT ID, Username, Name, Surname, Description FROM Users where Username = '%s'`, username)
+        rows, err := db.Query(statement)
+        //defer rows.Close()
+        defer func() {
+                if rows != nil {
+                        fmt.Println("before row close")
+                        if cerr := rows.Close(); cerr != nil {
+                                fmt.Printf("rows close error: %v", cerr)
+                        }
+                }
+        }()
+
+        for rows.Next() {
+                var id int
+		var username string
+		var name string
+		var surname string
+		var desc string
+		err = rows.Scan(&id, &username, &name, &surname, &desc)
+		temp := Userdata{ID: id, Username: username, Name: name, Surname: surname, Description: desc}
+                user = temp
+		if err != nil {
+                        fmt.Println("exists() Scan", err)
+                        return user, -1
+                }
+        }
+        return user, user.ID
+}
+
 // BUG(2): Function AddUser() is too slow
 // AddUser adds a new user to the database
 //

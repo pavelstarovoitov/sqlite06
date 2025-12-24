@@ -111,7 +111,7 @@ func SearchByName(username string) (Userdata, int) {
         db, err := openConnection()
         if err != nil {
                 fmt.Println(err)
-                return user, user.ID
+               // return user, user.ID
         }
         defer db.Close()
 
